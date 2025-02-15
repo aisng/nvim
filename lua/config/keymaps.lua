@@ -3,7 +3,7 @@
 -- Add any additional keymaps here
 
 -- toggle rspec
-vim.keymap.set("n", "<leader>rs", "<cmd>lua Go_to_test()<CR>", { noremap = true, silent = true, desc = "Toggle RSpec" })
+vim.keymap.set("n", "<leader>rs", "<cmd>lua Go_to_test()<CR>", { noremap = true, silent = true, desc = "Go to test" })
 vim.keymap.set(
   "n",
   "<leader>ry",

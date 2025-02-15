@@ -7,14 +7,38 @@ vim.opt.termguicolors = true
 
 function Go_to_test()
   local current_file = vim.fn.expand("%:p")
+  local filetype = vim.bo.filetype
   local target_file
 
-  if current_file:match("/spec/") then
+  local lang_map = {
+    {
+      ruby = {
+        test_dir = "/spec/",
+        src_dir = "/app/",
+        test_postfix = "_spec.rb",
+        src_postfix = ".rb",
+      },
+    },
+    solidity = {
+      test_dir = "/test/",
+      src_dir = "/src/",
+      test_postfix = ".t.sol",
+      src_postfix = ".sol",
+    },
+  }
+
+  local lang = lang_map[filetype]
+  if not lang then
+    vim.notify(("Unsupported file type: %s"):format(filetype))
+    return
+  end
+
+  if current_file:match(lang.test_dir) then
     -- Navigate from spec file to source file
-    target_file = current_file:gsub("/spec/", "/app/"):gsub("_spec.rb", ".rb")
+    target_file = current_file:gsub(lang.test_dir, lang.src_dir):gsub(lang.test_postfix, lang.src_postfix)
   else
     -- Navigate from source file to spec file
-    target_file = current_file:gsub("/app/", "/spec/"):gsub(".rb", "_spec.rb")
+    target_file = current_file:gsub(lang.src_dir, lang.test_dir):gsub(lang.src_postfix, lang.test_postfix)
   end
 
   -- Check if the file exists
