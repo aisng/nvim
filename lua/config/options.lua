@@ -11,13 +11,11 @@ function Go_to_test()
   local target_file
 
   local lang_map = {
-    {
-      ruby = {
-        test_dir = "/spec/",
-        src_dir = "/app/",
-        test_postfix = "_spec.rb",
-        src_postfix = ".rb",
-      },
+    ruby = {
+      test_dir = "/spec/",
+      src_dir = "/app/",
+      test_postfix = "_spec.rb",
+      src_postfix = ".rb",
     },
     solidity = {
       test_dir = "/test/",
