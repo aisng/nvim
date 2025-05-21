@@ -10,3 +10,9 @@ vim.keymap.set(
   "<cmd>lua Copy_file_path()<CR>",
   { noremap = true, silent = true, desc = "Copy file path" }
 )
+vim.keymap.set(
+  "n",
+  "<leader>fo",
+  "<cmd>lua Find_code_owners()<CR>",
+  { noremap = true, silent = true, desc = "Find code owners" }
+)

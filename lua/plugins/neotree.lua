@@ -14,8 +14,8 @@ return {
         event = "neo_tree_buffer_enter",
         handler = function()
           vim.cmd([[
-              setlocal relativenumber
-            ]])
+            setlocal relativenumber
+          ]])
           local events = require("neo-tree.events")
           events.fire_event(events.GIT_EVENT)
         end,

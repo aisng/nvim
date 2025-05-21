@@ -5,6 +5,47 @@ vim.g.lazyvim_ruby_lsp = "ruby_lsp"
 -- vim.g.lazyvim_ruby_formatter = "rubocop"
 vim.opt.termguicolors = true
 
+function Find_code_owners()
+  local full_filename = vim.fn.expand("%:p") -- Get absolute path of the current file
+
+  local relative_filename = full_filename:match(".*/core/(.*)")
+  local package_name = full_filename:match("packages/([^/]+)/")
+
+  if not relative_filename then
+    relative_filename = full_filename
+  end
+
+  local codeowners_path = "CODEOWNERS"
+  local file = io.open(codeowners_path, "r")
+  if not file then
+    vim.notify("Couldn't open CODEOWNERS file.", vim.log.levels.ERROR)
+    return
+  end
+
+  local owners = {}
+  for line in file:lines() do
+    local path_pattern, owners_str = line:match("^(%S+)%s+(.+)$")
+    if path_pattern and full_filename:find(path_pattern) then
+      owners = vim.split(owners_str, "%s+")
+      break
+    end
+  end
+  file:close()
+
+  if #owners == 0 then
+    vim.notify("No owners found for this file.", vim.log.levels.WARN)
+  else
+    local message = "File: "
+      .. relative_filename
+      .. "\n"
+      .. "Package: "
+      .. package_name
+      .. "\n\n"
+      .. table.concat(owners, "\n")
+    vim.notify(message, vim.log.levels.INFO)
+  end
+end
+
 function Go_to_test()
   local current_file = vim.fn.expand("%:p")
   local filetype = vim.bo.filetype
@@ -32,19 +73,15 @@ function Go_to_test()
   end
 
   if current_file:match(lang.test_dir) then
-    -- Navigate from spec file to source file
     target_file = current_file:gsub(lang.test_dir, lang.src_dir):gsub(lang.test_postfix, lang.src_postfix)
   else
-    -- Navigate from source file to spec file
     target_file = current_file:gsub(lang.src_dir, lang.test_dir):gsub(lang.src_postfix, lang.test_postfix)
   end
 
-  -- Check if the file exists
   if vim.fn.filereadable(target_file) == 0 then
     vim.notify(("Can't find file: %s"):format(target_file))
   end
 
-  -- Open the spec file
   vim.cmd("edit " .. target_file)
 end
 
