@@ -95,9 +95,9 @@ return {
 					})
 				end
 
-				keymap("gd", fzf.lsp_definitions, "Go to definition")
-				keymap("gr", fzf.lsp_references, "Go to references")
-				keymap("gi", fzf.lsp_implementations, "Go to implementations")
+				-- keymap("gd", fzf.lsp_definitions, "Go to definition")
+				-- keymap("gr", fzf.lsp_references, "Go to references")
+				-- keymap("gi", fzf.lsp_implementations, "Go to implementations")
 				keymap("K", vim.lsp.buf.hover, "Hover documentation")
 				keymap("<leader>f", vim.lsp.buf.format, "Format buffer")
 				keymap("<leader>e", vim.diagnostic.open_float, "Show diagnostic")
