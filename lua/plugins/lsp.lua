@@ -10,11 +10,13 @@ return {
 		local servers = {
 			ruby_lsp = {
 				mason = false,
-				cmd = { "mise", "exec", "--", "bundle", "exec", "ruby-lsp" },
+				cmd = { "mise", "exec", "--", "ruby-lsp" },
 				filetypes = { "ruby" },
 				root_dir = lspconfig.util.root_pattern("Gemfile", ".git"),
 				init_options = {
 					formatter = "rubocop",
+					formatterPath = "bundle",
+					formatterArgs = { "exec", "rubocop" },
 				},
 			},
 			lua_ls = {
@@ -40,6 +42,25 @@ return {
 				},
 			},
 			gopls = {},
+			yamlls = {
+				mason = true,
+				filetypes = { "yaml", "yml" },
+				settings = {
+					yaml = {
+						completion = true,
+						keyOrdering = false,
+						format = {
+							enable = true,
+						},
+						validate = true,
+						hover = true,
+						schemaStore = {
+							enable = true,
+							url = "https://www.schemastore.org/api/json/catalog.json",
+						},
+					},
+				},
+			},
 		}
 
 		local mason_servers = {}
