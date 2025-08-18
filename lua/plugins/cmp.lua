@@ -19,7 +19,7 @@ return {
 				["<C-f>"] = cmp.mapping.scroll_docs(4),
 
 				["<C-l>"] = cmp.mapping.confirm({ select = true }),
-				["<Esc>"] = cmp.mapping.abort(),
+				-- ["<Esc>"] = cmp.mapping.abort(),
 			}),
 			sources = {
 				{ name = "nvim_lsp" },

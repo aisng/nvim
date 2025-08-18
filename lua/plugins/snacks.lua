@@ -7,7 +7,7 @@ return {
 		bigfile = { enabled = true },
 		dashboard = { enabled = false },
 		explorer = { enabled = false },
-		indent = { enabled = false },
+		indent = { enabled = true },
 		input = { enabled = false },
 		notifier = {
 			enabled = true,
@@ -15,36 +15,6 @@ return {
 		},
 		picker = {
 			enabled = true,
-			marks = {
-				actions = {
-					delmark = function(picker)
-						local selected = picker:selected({ fallback = true })
-						local to_delete = vim.iter(selected)
-							:map(function(it)
-								return it.label
-							end)
-							:join("")
-						vim.api.nvim_win_call(vim.fn.win_getid(vim.fn.winnr("#")), function()
-							if pcall(vim.cmd.delmark, to_delete) then
-								-- NOTE: Before `picker.list:set_target`
-								-- NOTE: Resets `picker.list:is_selected`, `picker.list.selected`
-								picker.list:set_selected()
-								picker.list:set_target(math.min(picker.list.cursor, picker:count() - #selected))
-								picker:find() -- NOTE: Should also be called inside `nvim_win_cal`
-							else
-								Snacks.notify.error(string.format("Unable to delete marks: %s", to_delete))
-							end
-						end)
-					end,
-				},
-				win = {
-					input = {
-						keys = {
-							["<C-x>"] = { "delmark", mode = { "i", "n" } },
-						},
-					},
-				},
-			},
 		},
 		quickfile = { enabled = false },
 		scope = { enabled = false },

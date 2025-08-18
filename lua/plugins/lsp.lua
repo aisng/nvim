@@ -85,6 +85,13 @@ return {
 			group = vim.api.nvim_create_augroup("UserLspConfig", { clear = true }),
 
 			callback = function(event)
+				local client = vim.lsp.get_client_by_id(event.data.client_id)
+				local bufnr = event.buf
+
+				if client and client.server_capabilities.documentSymbolProvider then
+					require("nvim-navic").attach(client, bufnr)
+				end
+
 				local fzf = require("fzf-lua")
 				local keymap = function(keys, func, desc, mode)
 					mode = mode or "n"
