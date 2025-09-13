@@ -32,8 +32,8 @@ return {
 			cleanup_delay_ms = 2000,
 			keymaps = {
 				["g?"] = "actions.show_help",
-				["<C-l>"] = "actions.select",
-        ["<CR>"] = "actions.select",
+				-- ["<C-l>"] = "actions.select",
+				["<CR>"] = "actions.select",
 				["<C-t>"] = "actions.select_tab",
 				["<C-p>"] = { "actions.preview", opts = { vertical = true, split = "belowright" } },
 				["<C-c>"] = "actions.close",

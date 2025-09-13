@@ -42,17 +42,21 @@ function M.find_code_owners()
 		return
 	end
 
-	local owners = {}
+	local best_match = nil
+	local best_match_length = 0
+
 	for line in file:lines() do
 		local path_pattern, owners_str = line:match("^(%S+)%s+(.+)$")
 		if path_pattern and full_filename:find(path_pattern) then
-			owners = vim.split(owners_str, "%s+")
-			break
+			if #path_pattern > best_match_length then
+				best_match = vim.split(owners_str, "%s+")
+				best_match_length = #path_pattern
+			end
 		end
 	end
 	file:close()
 
-	if #owners == 0 then
+	if not best_match or #best_match == 0 then
 		vim.notify("No owners found for this file.", vim.log.levels.WARN)
 	else
 		local message = "File: "
@@ -61,7 +65,7 @@ function M.find_code_owners()
 			.. "Package: "
 			.. package_name
 			.. "\n\n"
-			.. table.concat(owners, "\n")
+			.. table.concat(best_match, "\n")
 		vim.notify(message, vim.log.levels.INFO)
 	end
 end
